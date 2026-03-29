@@ -7,17 +7,47 @@ from io import BytesIO
 
 # --- CORE LOGIC ---
 
-def get_bank_name(routing_number):
-    """Scrapes the Federal Reserve portal for the official bank name."""
+def get_bank_name_fixed(routing_number):
+    """
+    Improved scraper for the Federal Reserve E-Payments Directory.
+    Uses updated headers to avoid being flagged as a bot.
+    """
+    # 2026 Updated Search URL
     url = f"https://www.frbservices.org/p-search-fedach?routing={routing_number}"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    
+    # Critical: Browser-like headers to prevent "Not Found" / Blocking
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Referer": "https://www.frbservices.org/resources/routing-number-directory"
+    }
+    
     try:
-        response = requests.get(url, headers=headers, timeout=10)
-        soup = BeautifulSoup(response.text, "html.parser")
-        name_cell = soup.find("td", {"data-label": "Bank Name"})
-        return name_cell.text.strip() if name_cell else "Not Found"
-    except:
-        return "Search Error"
+        response = requests.get(url, headers=headers, timeout=15)
+        
+        if response.status_code != 200:
+            return f"Error: Server returned status {response.status_code}"
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Logic 1: Check for the specific table cell (Official Directory)
+        name_cell = soup.find('td', {'data-label': 'Bank Name'})
+        
+        # Logic 2: Fallback if they changed the 'data-label' attribute
+        if not name_cell:
+            # Look for a table row that contains your routing number, then get the name
+            rows = soup.find_all('tr')
+            for row in rows:
+                if routing_number in row.text:
+                    # Usually the Bank Name is the 2nd or 3rd column
+                    cols = row.find_all('td')
+                    if len(cols) > 1:
+                        return cols[1].text.strip() # Adjust index if needed
+
+        return name_cell.text.strip() if name_cell else "Routing Number Not Found"
+    
+    except Exception as e:
+        return f"Connection Error: {str(e)}"
 
 def get_bank_urls(bank_name):
     """Finds Home and Login URLs using DuckDuckGo Lite (No API required)."""
