@@ -4,7 +4,7 @@ import json
 import re
 import time
 from io import BytesIO
-from langchain_openai import ChatOpenAI
+from langchain-openai import ChatOpenAI
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain.agents import initialize_agent, AgentType
 

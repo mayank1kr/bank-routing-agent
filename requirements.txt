@@ -3,9 +3,9 @@ pandas
 beautifulsoup4
 requests
 openpyxl
+# Optional advanced LLM tools (if needed):
 langchain
 langchain-openai
-ChatOpenAI
-DuckDuckGoSearchRun
-langchain_community
-langchain.agents
+openai
+langchain-community
+duckduckgo-search
