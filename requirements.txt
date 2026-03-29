@@ -3,3 +3,7 @@ pandas
 beautifulsoup4
 requests
 openpyxl
+langchain_openai
+DuckDuckGoSearchRun
+langchain_community.tools
+langchain.agents
