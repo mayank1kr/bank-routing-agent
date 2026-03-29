@@ -3,7 +3,7 @@ pandas
 beautifulsoup4
 requests
 openpyxl
-# Optional advanced LLM tools (if needed):
+# Required for your langchain-based agent imports:
 langchain
 langchain-openai
 openai
