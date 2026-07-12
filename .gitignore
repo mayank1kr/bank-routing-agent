@@ -6,6 +6,12 @@ dist/
 wheels/
 *.egg-info
 uv.lock
-pyproject.toml
+
 # Virtual environments
-.venv
+.venv/
+
+# Test and local runtime artifacts
+.pytest_cache/
+.streamlit/
+.env
+*.log
