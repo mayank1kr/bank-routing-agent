@@ -7,8 +7,8 @@ from urllib.parse import urljoin, urlparse
 
 
 st.set_page_config(page_title="Server-Side URL Preview", page_icon="🌐")
-st.title("🌐 Server-Side URL Preview")
-st.markdown("Enter a website URL and the app will fetch and preview it from the server environment.")
+st.title("🌐 Url Check From US IP")
+st.markdown("Enter a website URL and the app will fetch and preview it from the server hosted in US loaction.")
 
 
 def normalize_url(raw_url: str) -> str:
